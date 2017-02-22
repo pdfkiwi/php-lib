@@ -1,0 +1,14 @@
+{
+    "name"    : "insolus/pdfkiwi",
+    "version" : "0.1.0",
+    "type"    : "library",
+    "private" : true,
+    "require" : {
+        "php" : ">=5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "PdfKiwi\\": "src"
+        }
+    }
+}
