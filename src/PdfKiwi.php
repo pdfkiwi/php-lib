@@ -8,6 +8,7 @@ class PdfKiwi
     public static $https_port     = 443;
     public static $api_host       = 'pdf.kiwi';
 
+    private $hostname;
     private $fields;
     private $scheme;
     private $api_prefix;
@@ -135,7 +136,7 @@ class PdfKiwi
     public function convertHtml($src, $outstream = null)
     {
         if (empty($src)) {
-            throw new PdfkiwiException("convertHTML(): the src parameter must not be empty!");
+            throw new PdfKiwiException("convertHTML(): the src parameter must not be empty!");
         }
 
         $this->fields['html'] = $src;
@@ -153,7 +154,7 @@ class PdfKiwi
     private function httpPost($url, $postfields, $outstream)
     {
         if (!function_exists("curl_init")) {
-            throw new PdfkiwiException("PdfKiwi requires php-curl extension, which is not installed on your system.");
+            throw new PdfKiwiException("PdfKiwi requires php-curl extension, which is not installed on your system.");
         }
 
         $c = curl_init();
@@ -189,15 +190,15 @@ class PdfKiwi
         curl_close($c);
 
         if ($error_number !== 0) {
-            throw new PdfkiwiException($error_message, $error_number);
+            throw new PdfKiwiException($error_message, $error_number);
         }
 
         if ($this->http_code !== 200) {
             $jsonResponse = json_decode($response, true);
             if (isset($jsonResponse['error']['message'])) {
-                throw new PdfkiwiException($jsonResponse['error']['message'], $this->http_code);
+                throw new PdfKiwiException($jsonResponse['error']['message'], $this->http_code);
             } else {
-                throw new PdfkiwiException($this->error ? $this->error : $response, $this->http_code);
+                throw new PdfKiwiException($this->error ? $this->error : $response, $this->http_code);
             }
         }
 
@@ -221,10 +222,10 @@ class PdfKiwi
 
         if ($written != strlen($data)) {
             if (get_magic_quotes_runtime()) {
-                throw new PdfkiwiException("Cannot write the PDF file because the 'magic_quotes_runtime' setting is enabled.
+                throw new PdfKiwiException("Cannot write the PDF file because the 'magic_quotes_runtime' setting is enabled.
 Please disable it either in your php.ini file, or in your code by calling 'set_magic_quotes_runtime(false)'.");
             } else {
-                throw new PdfkiwiException('Writing the PDF file failed.');
+                throw new PdfKiwiException('Writing the PDF file failed.');
             }
         }
         return $written;
