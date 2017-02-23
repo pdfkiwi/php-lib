@@ -1,4 +1,18 @@
 ## Utilitaire PHP pour utiliser l'API de pdf.kiwi
+### Installation
+Pour utiliser la librairie PHP de pdf.kiwi, il faut ajouter ces lignes au `composer.json` de vos projets :
+
+    "repositories": [
+        {
+            "type" : "git",
+            "url"  : "git@gitlab.insolus.net:pdfkiwi/php-lib.git"
+        }
+    ],
+
+Et, dans la section `require` :
+
+    "pdfkiwi/php-lib" : "~{version choisie}"
+
 ### Guide de démarrage rapide
 Lors de l'instanciation de l'objet PdfKiwi, il faut lui donner l'**adresse email** et le **token** pour l'autorisation d'accès à l'API.  
 Il est aussi possible de lui passer l'adresse de l'accès à l'api. Si ce paramètre est omis, PdfKiwi utilisera l'adresse 'pdf.kiwi'.
