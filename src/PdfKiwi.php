@@ -1,7 +1,5 @@
 <?php
-namespace Pdfkiwi;
-
-use Pdfkiwi\PdfkiwiException;
+namespace PdfKiwi;
 
 class PdfKiwi
 {
@@ -171,7 +169,7 @@ class PdfKiwi
 
         if ($outstream) {
             $this->outstream = $outstream;
-            curl_setopt($c, CURLOPT_WRITEFUNCTION, [$this, 'receiveToSream']);
+            curl_setopt($c, CURLOPT_WRITEFUNCTION, [$this, 'receiveToStream']);
         }
 
         if ($this->scheme === 'https' && self::$api_host === 'pdf.kiwi') {
@@ -208,7 +206,7 @@ class PdfKiwi
         }
     }
 
-    private function receiveToSream($curl, $data)
+    private function receiveToStream($curl, $data)
     {
         if ($this->http_code === 0) {
             $this->http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
