@@ -5,6 +5,10 @@ Il est aussi possible de lui passer l'adresse de l'accès à l'api. Si ce param�
 
 Voici un exemple :
 
+    use PdfKiwi\PdfKiwi as PdfKiwi;
+    
+    (...)
+
     $conf = Configure::read('PdfKiwi');
 
     $pdfKiwi = new PdfKiwi($conf['api']['email'], $conf['api']['token'], $conf['api']['host']);
@@ -49,10 +53,10 @@ Pour définir un pied de page au format HTML. Paramètre :
 #### setPageMargins()
 Pour définir les marges des pages. Paramètres :
 
-    $top (string) La valeur de la marge du haut, avec l'unité (ex. '20mm')
-    $right (string) La valeur de la marge de droite, avec l'unité (ex. '20mm')
+    $top    (string) La valeur de la marge du haut, avec l'unité (ex. '20mm')
+    $right  (string) La valeur de la marge de droite, avec l'unité (ex. '20mm')
     $bottom (string) La valeur de la marge du bas, avec l'unité (ex. '20mm')
-    $left (string) La valeur de la marge de gauche, avec l'unité (ex. '20mm')
+    $left   (string) La valeur de la marge de gauche, avec l'unité (ex. '20mm')
 
 #### setOrientation()
 Pour définir l'orientation des pages. Paramètre :
