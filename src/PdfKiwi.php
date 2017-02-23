@@ -3,17 +3,18 @@ namespace PdfKiwi;
 
 class PdfKiwi
 {
-    public static $client_version = "0.1.0";
-    public static $http_port      = 80;
-    public static $https_port     = 443;
-    public static $api_host       = 'pdf.kiwi';
+    public static $libVersion = "0.1.1";
+    public static $httpPort   = 80;
+    public static $httpsPort  = 443;
+    public static $apiHost    = 'pdf.kiwi';
 
     private $hostname;
+    private $userAgent;
     private $fields;
     private $scheme;
-    private $api_prefix;
+    private $apiPrefix;
     private $port;
-    private $http_code;
+    private $httpCode;
     private $error;
 
     /**
@@ -28,7 +29,7 @@ class PdfKiwi
         if ($hostname) {
             $this->hostname = $hostname;
         } else {
-            $this->hostname = self::$api_host;
+            $this->hostname = self::$apiHost;
         }
         $this->useSSL(false);
 
@@ -38,7 +39,7 @@ class PdfKiwi
             'options' => []
         ];
 
-        $this->user_agent = "pdfkiwi_php_client_".self::$client_version;
+        $this->userAgent = sprintf('pdfkiwi_php_client_%s', self::$libVersion);
     }
 
     /**
@@ -49,14 +50,14 @@ class PdfKiwi
     public function useSSL($useSSL)
     {
         if ($useSSL) {
-            $this->port = self::$https_port;
+            $this->port   = self::$httpsPort;
             $this->scheme = 'https';
         } else {
-            $this->port = self::$http_port;
+            $this->port   = self::$httpPort;
             $this->scheme = 'http';
         }
 
-        $this->api_prefix = "{$this->scheme}://{$this->hostname}/api";
+        $this->apiPrefix = sprintf('%s://%s/api', $this->scheme, $this->hostname);
     }
 
     /**
@@ -140,9 +141,9 @@ class PdfKiwi
         }
 
         $this->fields['html'] = $src;
-        $uri = sprintf('%s/generator/render/', $this->api_prefix);
+        $uri = sprintf('%s/generator/render/', $this->apiPrefix);
         $postfields = http_build_query($this->fields);
-        return $this->httpPost($uri, $postfields, $outstream);
+        return $this->__httpPost($uri, $postfields, $outstream);
     }
 
     // ——————————————————————————————————————————————————————
@@ -151,54 +152,50 @@ class PdfKiwi
     // —
     // ——————————————————————————————————————————————————————
 
-    private function httpPost($url, $postfields, $outstream)
+    private function __httpPost($url, $postfields, $outstream)
     {
         if (!function_exists("curl_init")) {
             throw new PdfKiwiException("PdfKiwi requires php-curl extension, which is not installed on your system.");
         }
 
-        $c = curl_init();
-        curl_setopt($c, CURLOPT_URL, $url);
-        curl_setopt($c, CURLOPT_HEADER, false);
-        curl_setopt($c, CURLOPT_CONNECTTIMEOUT, 10);
-        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($c, CURLOPT_POST, true);
-        curl_setopt($c, CURLOPT_PORT, $this->port);
-        curl_setopt($c, CURLOPT_POSTFIELDS, $postfields);
-        curl_setopt($c, CURLOPT_DNS_USE_GLOBAL_CACHE, false);
-        curl_setopt($c, CURLOPT_USERAGENT, $this->user_agent);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_PORT, $this->port);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $postfields);
+        curl_setopt($curl, CURLOPT_DNS_USE_GLOBAL_CACHE, false);
+        curl_setopt($curl, CURLOPT_USERAGENT, $this->userAgent);
 
         if ($outstream) {
             $this->outstream = $outstream;
-            curl_setopt($c, CURLOPT_WRITEFUNCTION, [$this, 'receiveToStream']);
+            curl_setopt($curl, CURLOPT_WRITEFUNCTION, [$this, '__receiveToStream']);
         }
 
-        if ($this->scheme === 'https' && self::$api_host === 'pdf.kiwi') {
-            curl_setopt($c, CURLOPT_SSL_VERIFYPEER, true);
-        } else {
-            curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, ($this->scheme === 'https' && self::$apiHost === 'pdf.kiwi'));
+
+        $this->httpCode = 0;
+        $this->error    = "";
+
+        $response       = curl_exec($curl);
+        $this->httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $errorMessage   = curl_error($curl);
+        $errorNumber    = curl_errno($curl);
+
+        curl_close($curl);
+
+        if ($errorNumber !== 0) {
+            throw new PdfKiwiException($errorMessage, $errorNumber);
         }
 
-        $this->http_code = 0;
-        $this->error     = "";
-
-        $response        = curl_exec($c);
-        $this->http_code = curl_getinfo($c, CURLINFO_HTTP_CODE);
-        $error_message   = curl_error($c);
-        $error_number    = curl_errno($c);
-
-        curl_close($c);
-
-        if ($error_number !== 0) {
-            throw new PdfKiwiException($error_message, $error_number);
-        }
-
-        if ($this->http_code !== 200) {
+        if ($this->httpCode !== 200) {
             $jsonResponse = json_decode($response, true);
             if (isset($jsonResponse['error']['message'])) {
-                throw new PdfKiwiException($jsonResponse['error']['message'], $this->http_code);
+                throw new PdfKiwiException($jsonResponse['error']['message'], $this->httpCode);
             } else {
-                throw new PdfKiwiException($this->error ? $this->error : $response, $this->http_code);
+                throw new PdfKiwiException($this->error ? $this->error : $response, $this->httpCode);
             }
         }
 
@@ -207,13 +204,13 @@ class PdfKiwi
         }
     }
 
-    private function receiveToStream($curl, $data)
+    private function __receiveToStream($curl, $data)
     {
-        if ($this->http_code === 0) {
-            $this->http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        if ($this->httpCode === 0) {
+            $this->httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         }
 
-        if ($this->http_code >= 400) {
+        if ($this->httpCode >= 400) {
             $this->error = $this->error . $data;
             return strlen($data);
         }
@@ -222,10 +219,12 @@ class PdfKiwi
 
         if ($written != strlen($data)) {
             if (get_magic_quotes_runtime()) {
-                throw new PdfKiwiException("Cannot write the PDF file because the 'magic_quotes_runtime' setting is enabled.
-Please disable it either in your php.ini file, or in your code by calling 'set_magic_quotes_runtime(false)'.");
+                throw new PdfKiwiException(
+                    "Cannot write the PDF file because the 'magic_quotes_runtime' setting is enabled." .
+                    "Please disable it either in your php.ini file, or in your code by calling 'set_magic_quotes_runtime(false)'."
+                );
             } else {
-                throw new PdfKiwiException('Writing the PDF file failed.');
+                throw new PdfKiwiException("Writing the PDF file failed.");
             }
         }
         return $written;
