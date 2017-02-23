@@ -1,7 +1,7 @@
 <?php
-namespace Pdfkiwi;
+namespace PdfKiwi;
 
-class PdfkiwiException extends Exception
+class PdfkiwiException extends \Exception
 {
     public function __toString()
     {
