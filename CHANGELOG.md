@@ -1,4 +1,4 @@
-v 0.1.1 (unreleased)
+v 0.1.1
   - Fix bug d'autoload : déplacement des fichiers dans src/ (après vérifications)
 
 v 0.1.0
