@@ -1,3 +1,6 @@
+v 0.1.2
+  - Amélioration de la gestion des retours d'erreur API
+
 v 0.1.1
   - Fix bug d'autoload : déplacement des fichiers dans src/ (après vérifications)
 

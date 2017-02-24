@@ -1,4 +1,6 @@
-## Utilitaire PHP pour utiliser l'API de pdf.kiwi
+Utilitaire PHP pour utiliser l'API de pdf.kiwi
+---
+
 ### Installation
 Pour utiliser la librairie PHP de pdf.kiwi, il faut ajouter ces lignes au `composer.json` de vos projets :
 
@@ -77,3 +79,18 @@ Pour définir l'orientation des pages. Paramètre :
 
     $orientation (string) L'orientation des pages. Doit être soit 'landscape', soit 'portrait'.
                           La valeur 'paysage' est autorisée et correspond à 'landscape'.
+
+---
+
+### Guide de transition depuis PdfCrowd vers pdf.kiwi
+D'une manière générale, nous avons essayé de garder un maximum de méthodes similaires à ce que propose la librairie [pdfcrowd.php](https://github.com/pdfcrowd/pdfcrowd-php/), afin de faciliter la transition vers **Pdf.Kiwi**. Cependant, certaines options qui n'étaient pas disponibles avec PdfCrowd, le sont avec Pdf.Kiwi. Aussi, la façon de l'importer au projet est différente.
+
+Voici la liste des choses à faire pour passer à Pdf.Kiwi :
+
+#### Importation de la librairie
+Si vous installez la librairie `pdfkiwi/php-lib` via Composer, il n'est plus nécessaire d'appeler la méthode Cake `App::import()` pour inclure la classe. Il suffit d'ajouter la ligne suivante avant la déclaration de votre classe qui génére les PDF :
+
+    use PdfKiwi\PdfKiwi;
+
+#### Orientation
+Il n'est plus nécessaire de redéfinir (inverser) la largeur et la hauteur de page quand on veut une orientation au format "paysage". Il suffit maintenant d'appeler la méthode `setOrientation()` avec l'orientation choisie (voir *liste des méthodes publiques*, ci-dessus).
