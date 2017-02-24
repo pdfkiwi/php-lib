@@ -1,4 +1,6 @@
-## Utilitaire PHP pour utiliser l'API de pdf.kiwi
+Utilitaire PHP pour utiliser l'API de pdf.kiwi
+---
+
 ### Installation
 Pour utiliser la librairie PHP de pdf.kiwi, il faut ajouter ces lignes au `composer.json` de vos projets :
 
