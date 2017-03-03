@@ -3,7 +3,7 @@ namespace PdfKiwi;
 
 class PdfKiwi
 {
-    public static $libVersion = "0.1.2";
+    public static $libVersion = "0.1.3";
     public static $httpPort   = 80;
     public static $httpsPort  = 443;
     public static $apiHost    = 'pdf.kiwi';
@@ -92,6 +92,24 @@ class PdfKiwi
     }
 
     /**
+     * Pour définir un en-tête de page au format TEXTE
+     *
+     * @param mixed $value Peut être soit :
+     *      - string Le contenu (texte) du header (sera aligné à gauche)
+     *      - array  Tableau avec 3 valeurs : [left, center, right]
+     */
+    public function setHeaderText($value)
+    {
+        if (is_array($value)) {
+            $this->fields['options']['header_text_left']   = $value[0];
+            $this->fields['options']['header_text_center'] = $value[1];
+            $this->fields['options']['header_text_right']  = $value[2];
+        } else {
+            $this->fields['options']['header_text_left'] = $value;
+        }
+    }
+
+    /**
      * Pour définir un pied de page au format HTML
      *
      * @param string $value Le contenu HTML du footer
@@ -99,6 +117,24 @@ class PdfKiwi
     public function setFooterHtml($value)
     {
         $this->fields['options']['footer_html'] = $value;
+    }
+
+    /**
+     * Pour définir un pied de page au format TEXTE
+     *
+     * @param mixed $value Peut être soit :
+     *      - string Le contenu (texte) du footer (sera aligné à gauche)
+     *      - array  Tableau avec 3 valeurs : [left, center, right]
+     */
+    public function setFooterText($value)
+    {
+        if (is_array($value)) {
+            $this->fields['options']['footer_text_left']   = $value[0];
+            $this->fields['options']['footer_text_center'] = $value[1];
+            $this->fields['options']['footer_text_right']  = $value[2];
+        } else {
+            $this->fields['options']['footer_text_left'] = $value;
+        }
     }
 
     /**
