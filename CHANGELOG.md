@@ -1,4 +1,4 @@
-v 0.1.3 (unreleased)
+v 0.1.3
   - Ajout des méthodes `setHeaderText()` et `setFooterText()` (#2)
 
 v 0.1.2
