@@ -1,3 +1,6 @@
+v 0.1.3 (unreleased)
+  - Ajout des méthodes `setHeaderText()` et `setFooterText()` (#2)
+
 v 0.1.2
   - Amélioration de la gestion des retours d'erreur API
 
