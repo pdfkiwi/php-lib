@@ -1,4 +1,4 @@
-v 0.1.4 (unreleased)
+v 0.1.4
   - Utilisation de SSL pour l'adresse par défaut de l'API (https://pdf.kiwi) (#3)
 
 v 0.1.3
