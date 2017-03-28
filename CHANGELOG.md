@@ -1,3 +1,6 @@
+v 0.1.4 (unreleased)
+  - Utilisation de SSL pour l'adresse par défaut de l'API (https://pdf.kiwi) (#3)
+
 v 0.1.3
   - Ajout des méthodes `setHeaderText()` et `setFooterText()` (#2)
 
