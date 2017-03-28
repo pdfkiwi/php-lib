@@ -25,14 +25,15 @@ class PdfKiwi
      * @param string $apiToken Le token du client
      * @param string $hostname L'adresse de l'API de pdf.kiwi (par défaut 'pdf.kiwi')
      */
-    public function __construct($email, $apiToken, $hostname = null)
+    public function __construct($email, $apiToken, $hostname = null, $useSSL = true)
     {
         if ($hostname) {
             $this->hostname = $hostname;
         } else {
             $this->hostname = self::$apiHost;
         }
-        $this->useSSL(false);
+
+        $this->_initApiUrl($useSSL);
 
         $this->fields = [
             'email'   => $email,
@@ -44,11 +45,11 @@ class PdfKiwi
     }
 
     /**
-     * Pour utiliser SSL ou pas
+     * Initialise l'adresse de l'API
      *
      * @param boolean $useSSL True pour utiliser SSL, false sinon.
      */
-    public function useSSL($useSSL)
+    private function _initApiUrl($useSSL)
     {
         if ($useSSL) {
             $this->port   = self::$httpsPort;
