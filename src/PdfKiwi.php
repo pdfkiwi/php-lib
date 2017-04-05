@@ -100,7 +100,9 @@ class PdfKiwi
      */
     public function setHeaderSpacing($value)
     {
-        $this->fields['options']['header_spacing'] = (float)$value;
+        if ((float)$value) {
+            $this->fields['options']['header_spacing'] = (float)$value;
+        }
     }
 
     /**
@@ -138,7 +140,9 @@ class PdfKiwi
      */
     public function setFooterSpacing($value)
     {
-        $this->fields['options']['footer_spacing'] = (float)$value;
+        if ((float)$value) {
+            $this->fields['options']['footer_spacing'] = (float)$value;
+        }
     }
 
     /**
