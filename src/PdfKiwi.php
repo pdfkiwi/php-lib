@@ -92,6 +92,17 @@ class PdfKiwi
         $this->fields['options']['header_html'] = $value;
     }
 
+
+    /**
+     * Pour définir l'espacement entre l'en tête de page et le corps du document
+     *
+     * @param float $value l'espacement (en mm) entre le header et le corps, sans l'unité
+     */
+    public function setHeaderSpacing($value)
+    {
+        $this->fields['options']['header_spacing'] = (float)$value;
+    }
+
     /**
      * Pour définir un en-tête de page au format TEXTE
      *
@@ -118,6 +129,16 @@ class PdfKiwi
     public function setFooterHtml($value)
     {
         $this->fields['options']['footer_html'] = $value;
+    }
+
+    /**
+     * Pour définir l'espacement entre le pied de page et le corps du document
+     *
+     * @param float $value l'espacement (en mm) entre le footer et le corps, sans l'unité
+     */
+    public function setFooterSpacing($value)
+    {
+        $this->fields['options']['footer_spacing'] = (float)$value;
     }
 
     /**
