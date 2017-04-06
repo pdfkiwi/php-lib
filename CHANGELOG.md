@@ -1,3 +1,6 @@
+v 0.1.5 (unreleased)
+  - Support des options d'espacement du header et du footer : `header_spacing` et `footer_spacing` (#4) -> voir version 0.7.0 de pdfKiwi.
+
 v 0.1.4
   - Utilisation de SSL pour l'adresse par défaut de l'API (https://pdf.kiwi) (#3)
 
