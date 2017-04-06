@@ -1,4 +1,4 @@
-v 0.1.5 (unreleased)
+v 0.1.5
   - Support des options d'espacement du header et du footer : `header_spacing` et `footer_spacing` (#4) -> voir version 0.7.0 de pdfKiwi.
 
 v 0.1.4

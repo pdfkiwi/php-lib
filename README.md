@@ -66,6 +66,16 @@ Pour définir un pied de page au format HTML. Paramètre :
 
     $value (string) Le contenu HTML du footer
 
+#### setHeaderSpacing()
+Pour définir l'espacement entre l'en-tête de page et le corps du document. Paramètre :
+
+    $value (float) L'espacement entre le header et le body, en mm. (ne pas donner l'unité)
+
+#### setFooterSpacing()
+Pour définir l'espacement entre le pied de page et le corps du document. Paramètre :
+
+    $value (float) L'espacement entre le footer et le body, en mm. (ne pas donner l'unité)
+
 #### setPageMargins()
 Pour définir les marges des pages. Paramètres :
 
