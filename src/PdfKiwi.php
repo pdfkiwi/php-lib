@@ -3,7 +3,7 @@ namespace PdfKiwi;
 
 class PdfKiwi
 {
-    public static $libVersion = "0.1.5";
+    public static $libVersion = "0.1.6";
     public static $httpPort   = 80;
     public static $httpsPort  = 443;
     public static $apiHost    = 'pdf.kiwi';
@@ -160,6 +160,22 @@ class PdfKiwi
             $this->fields['options']['footer_text_right']  = $value[2];
         } else {
             $this->fields['options']['footer_text_left'] = $value;
+        }
+    }
+
+    /**
+     * Pour définir une liste de numéros de pages sur lesquelles n'apparaîtront pas les header et footer
+     *
+     * @param mixed $value Peut être soit :
+     *      - string Une liste de numéros de pages, séparés par des virgules (sans espace)
+     *      - array  Un Tableau comportant la liste des numéros de page à exclure
+     */
+    public function setHeaderFooterPageExcludeList($value)
+    {
+        if (is_array($value)) {
+            $this->fields['options']['header_footer_exclude_pages'] = implode(',', $value);
+        } else {
+            $this->fields['options']['header_footer_exclude_pages'] = $value;
         }
     }
 
