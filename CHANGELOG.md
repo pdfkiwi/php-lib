@@ -1,4 +1,4 @@
-v 0.1.6 (unreleased)
+v 0.1.6
   - Support de l'option d'exclusion du header et du footer dans certaines pages : `header_footer_exclude_pages` (#5) -> voir version 0.7.1 de pdfKiwi.
 
 v 0.1.5
