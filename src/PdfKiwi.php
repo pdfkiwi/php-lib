@@ -164,6 +164,22 @@ class PdfKiwi
     }
 
     /**
+     * Pour définir une liste de numéros de pages sur lesquelles n'apparaîtront pas les header et footer
+     *
+     * @param mixed $value Peut être soit :
+     *      - string Une liste de numéros de pages, séparés par des virgules (sans espace)
+     *      - array  Un Tableau comportant la liste des numéros de page à exclure
+     */
+    public function setHeaderFooterPageExcludeList($value)
+    {
+        if (is_array($value)) {
+            $this->fields['options']['header_footer_exclude_pages'] = implode(',', $value);
+        } else {
+            $this->fields['options']['header_footer_exclude_pages'] = $value;
+        }
+    }
+
+    /**
      * Pour définir les marges des pages
      *
      * @param string $top La valeur de la marge du haut, avec l'unité (ex. 20mm)
