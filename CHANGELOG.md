@@ -1,3 +1,8 @@
+## 0.1.7 (unreleased)
+- Suppression d'un fichier en doublon (`PdfKiwiException`) (#6)
+- Mise à jour du Readme avec la nouvelle adresse du repository `pdf.kiwi` (#8)
+- Normalisation du Changelog : ajout des dates de release (#7)
+
 ## 0.1.6 (2017-04-07)
 - Support de l'option d'exclusion du header et du footer dans certaines pages : 
   `header_footer_exclude_pages` (#5) -> voir version 0.7.1 de l'API pdf.kiwi.
