@@ -1,4 +1,4 @@
-## 0.1.7 (unreleased)
+## 0.1.7 (2017-05-16)
 - Suppression d'un fichier en doublon (`PdfKiwiException`) (#6)
 - Mise à jour du Readme avec la nouvelle adresse du repository `pdf.kiwi` (#8)
 - Normalisation du Changelog : ajout des dates de release (#7)
