@@ -7,7 +7,7 @@ Pour utiliser la librairie PHP de pdf.kiwi, il faut ajouter ces lignes au `compo
     "repositories": [
         {
             "type" : "git",
-            "url"  : "git@gitlab.insolus.net:pdfkiwi/php-lib.git"
+            "url"  : "git@gitlab.insolus.net:pdf.kiwi/php-lib.git"
         }
     ],
 
