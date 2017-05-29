@@ -3,6 +3,9 @@ pdfkiwi/php-lib
 
 > Utilitaire PHP pour utiliser l'API de [pdf.kiwi](https://pdf.kiwi)
 
+[![build status](https://gitlab.insolus.net/pdf.kiwi/php-lib/badges/master/build.svg)](https://gitlab.insolus.net/pdf.kiwi/php-lib/commits/master)
+[![coverage report](https://gitlab.insolus.net/pdf.kiwi/php-lib/badges/master/coverage.svg)](https://gitlab.insolus.net/pdf.kiwi/php-lib/commits/master)
+
 ## Installation
 
 ```bash
