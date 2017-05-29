@@ -11,7 +11,8 @@ class PdfkiwiTest extends TestCase
 
     public function testDemo()
     {
-        // $pdfkiwi = new PdfKiwi('foo', 'bar');
-        // $this->assertTrue(true);
+        // $pdfkiwi = new PdfKiwi(...);
+        // $this->assertFalse(true);
+        $this->markTestIncomplete();
     }
 }

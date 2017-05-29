@@ -1,0 +1,14 @@
+image: docker.insolus.net/php:5.6
+
+before_script:
+    - composer install &>/dev/null
+
+"Lint: php":
+    stage  : test
+    script :
+        - ./vendor/bin/phpcs --colors -p .
+
+"Unit-tests":
+    stage  : test
+    script :
+        - ./vendor/bin/phpunit
