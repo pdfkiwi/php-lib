@@ -11,4 +11,4 @@ before_script:
 "Unit-tests":
     stage  : test
     script :
-        - ./vendor/bin/phpunit
+        - ./vendor/bin/phpunit --coverage-text --colors=never
