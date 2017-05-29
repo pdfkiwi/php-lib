@@ -1,4 +1,4 @@
-pdf.kiwi - PHP Lib
+pdfkiwi/php-lib
 ---
 
 > Utilitaire PHP pour utiliser l'API de [pdf.kiwi](https://pdf.kiwi)
