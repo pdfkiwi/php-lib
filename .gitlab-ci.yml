@@ -1,7 +1,12 @@
-image: docker.insolus.net/php:5.6
+image: php:5.6
 
 before_script:
-    - composer install &>/dev/null
+    - apt-get update -yqq &>/dev/null
+    - apt-get install git -yqq &>/dev/null
+    - pecl install xdebug &>/dev/null
+    - docker-php-ext-enable xdebug &>/dev/null
+    - curl -sS https://getcomposer.org/installer | php &>/dev/null
+    - php composer.phar install &>/dev/null
 
 "Lint: php":
     stage  : test
