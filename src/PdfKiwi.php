@@ -4,17 +4,12 @@ namespace PdfKiwi;
 class PdfKiwi
 {
     public static $libVersion = "0.1.7";
-    public static $httpPort   = 80;
-    public static $httpsPort  = 443;
-    public static $apiHost    = 'pdf.kiwi';
+    public static $apiHost    = 'https://pdf.kiwi';
 
-    private $hostname;
+    private $apiPrefix;
     private $userAgent;
     private $fields;
-    private $scheme;
-    private $apiPrefix;
-    private $port;
-    private $httpCode;
+    private $httpResponseCode;
     private $errorNumber;
     private $errorMessage;
 
@@ -23,17 +18,10 @@ class PdfKiwi
      *
      * @param string $email L'adresse email du client
      * @param string $apiToken Le token du client
-     * @param string $hostname L'adresse de l'API de pdf.kiwi (par défaut 'pdf.kiwi')
      */
-    public function __construct($email, $apiToken, $hostname = null, $useSSL = true)
+    public function __construct($email, $apiToken)
     {
-        if ($hostname) {
-            $this->hostname = $hostname;
-        } else {
-            $this->hostname = self::$apiHost;
-        }
-
-        $this->_initApiUrl($useSSL);
+        $this->apiPrefix = sprintf('%s/api', self::$apiHost);
 
         $this->fields = [
             'email'   => $email,
@@ -42,24 +30,6 @@ class PdfKiwi
         ];
 
         $this->userAgent = sprintf('pdfkiwi_php_client_%s', self::$libVersion);
-    }
-
-    /**
-     * Initialise l'adresse de l'API
-     *
-     * @param boolean $useSSL True pour utiliser SSL, false sinon.
-     */
-    private function _initApiUrl($useSSL)
-    {
-        if ($useSSL) {
-            $this->port   = self::$httpsPort;
-            $this->scheme = 'https';
-        } else {
-            $this->port   = self::$httpPort;
-            $this->scheme = 'http';
-        }
-
-        $this->apiPrefix = sprintf('%s://%s/api', $this->scheme, $this->hostname);
     }
 
     /**
@@ -208,7 +178,7 @@ class PdfKiwi
     /**
      * Pour convertir un document HTML se trouvant en mémoire
      *
-     * @param string $src Le contenu du document HTML
+     * @param string $src Le contenu du document HTML à convertir
      * @param string $outstream Si défini, enregistre la sortie dans un fichier : il faut spécifier un chemin et un nom de fichier.
      *                          Si null, retourne une chaîne contenant le PDF
      * @return string Le résultat de la conversion en PDF
@@ -220,8 +190,10 @@ class PdfKiwi
         }
 
         $this->fields['html'] = $src;
-        $uri = sprintf('%s/generator/render/', $this->apiPrefix);
+
+        $uri        = sprintf('%s/convert/html/', $this->apiPrefix);
         $postfields = http_build_query($this->fields);
+
         return $this->__httpPost($uri, $postfields, $outstream);
     }
 
@@ -243,24 +215,24 @@ class PdfKiwi
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_PORT, $this->port);
+        curl_setopt($curl, CURLOPT_PORT, 443);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $postfields);
         curl_setopt($curl, CURLOPT_DNS_USE_GLOBAL_CACHE, false);
         curl_setopt($curl, CURLOPT_USERAGENT, $this->userAgent);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, ($this->scheme === 'https' && self::$apiHost === 'pdf.kiwi'));
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
 
         if ($outstream) {
             $this->outstream = $outstream;
             curl_setopt($curl, CURLOPT_WRITEFUNCTION, [$this, '__receiveToStream']);
         }
 
-        $this->httpCode = 0;
+        $this->httpResponseCode = 0;
 
         $response = curl_exec($curl);
 
-        $this->httpCode     = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $this->errorNumber  = curl_errno($curl);
-        $this->errorMessage = curl_error($curl);
+        $this->httpResponseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $this->errorNumber      = curl_errno($curl);
+        $this->errorMessage     = curl_error($curl);
 
         curl_close($curl);
 
@@ -268,11 +240,11 @@ class PdfKiwi
             throw new PdfKiwiException($this->errorMessage, $this->errorNumber);
         }
 
-        if ($this->httpCode !== 200) {
+        if ($this->httpResponseCode !== 200) {
             $jsonResponse = json_decode($response, true);
             throw new PdfKiwiException(
                 ($jsonResponse) ? $jsonResponse['error']['message'] : $response,
-                ($jsonResponse) ? $jsonResponse['error']['code'] : $this->httpCode
+                ($jsonResponse) ? $jsonResponse['error']['code'] : $this->httpResponseCode
             );
         }
 
@@ -281,11 +253,11 @@ class PdfKiwi
 
     private function __receiveToStream($curl, $data)
     {
-        if ($this->httpCode === 0) {
-            $this->httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        if ($this->httpResponseCode === 0) {
+            $this->httpResponseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         }
 
-        if ($this->httpCode >= 400) {
+        if ($this->httpResponseCode >= 400) {
             $this->errorMessage = $this->errorMessage . $data;
             return strlen($data);
         }
