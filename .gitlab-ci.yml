@@ -16,5 +16,4 @@ before_script:
 "Unit-tests":
     stage  : test
     script :
-        - php -i | grep curl
         - ./vendor/bin/phpunit --coverage-text --colors=never

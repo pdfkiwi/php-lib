@@ -272,29 +272,7 @@ class PdfkiwiTest extends TestCase
             ->statusCode(Response::HTTP_OK)
             ->body($pdfResponse)
             ->end();
-
-        $expectations = $this->http->mock->flushExpectations();
-        foreach ($expectations as $expectation) {
-            $response = $this->http->client
-                ->post(
-                    '/_expectation',
-                    null,
-                    [
-                        'matcher'  => serialize($expectation->getMatcherClosures()),
-                        'limiter'  => serialize($expectation->getLimiter()),
-                        'response' => serialize($expectation->getResponse()),
-                    ]
-                )
-                ->send();
-
-            if ($response->getStatusCode() !== 201) {
-                var_dump([
-                    $response->getStatusCode(),
-                    (string)$response->getBody()
-                ]);
-                throw new RuntimeException('Could not set up expectations');
-            }
-        }
+        $this->http->setUp();
 
         // - Converting HTML to PDF and get the response as string
         $result = $this->pdfKiwi->convertHtml('<h1>Testing pdf.kiwi</h1>');
