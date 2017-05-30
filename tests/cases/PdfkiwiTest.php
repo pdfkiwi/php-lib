@@ -290,7 +290,7 @@ class PdfkiwiTest extends TestCase
             if ($response->getStatusCode() !== 201) {
                 var_dump([
                     $response->getStatusCode(),
-                    $response->getBody()
+                    (string)$response->getBody()
                 ]);
                 throw new RuntimeException('Could not set up expectations');
             }
