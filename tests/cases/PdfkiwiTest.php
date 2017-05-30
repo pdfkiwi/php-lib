@@ -2,16 +2,51 @@
 use PHPUnit\Framework\TestCase;
 use PdfKiwi\PdfKiwi;
 use PdfKiwi\PdfKiwiException;
+use InterNations\Component\HttpMock\PHPUnit\HttpMockTrait;
+use Symfony\Component\HttpFoundation\Response;
 
 class PdfkiwiTest extends TestCase
 {
+    use HttpMockTrait;
+
+    public static function setUpBeforeClass()
+    {
+        static::setUpHttpMockBeforeClass('8082', 'localhost');
+    }
+
+    public static function tearDownAfterClass()
+    {
+        static::tearDownHttpMockAfterClass();
+    }
+
     public function setUp()
     {
-        $this->pdfKiwi          = new PdfKiwi('test@test.org', 'ca4e46cf6f31155e25dd1168ecbc38f9');
-        $this->pdfKiwiReflected = new ReflectionClass('PdfKiwi\PdfKiwi');
+        $this->pdfKiwi    = new PdfKiwi('test@test.org', 'ca4e46cf6f31155e25dd1168ecbc38f9');
+        $pdfKiwiReflected = new ReflectionClass('PdfKiwi\PdfKiwi');
 
-        $this->fields = $this->pdfKiwiReflected->getProperty('fields');
+        $apiHostProperty = $pdfKiwiReflected->getProperty('apiHost');
+        $apiHostProperty->setAccessible(true);
+        $apiHostProperty->setValue('localhost');
+
+        $apiHostProperty = $pdfKiwiReflected->getProperty('apiPort');
+        $apiHostProperty->setAccessible(true);
+        $apiHostProperty->setValue('8082');
+
+        $this->fields = $pdfKiwiReflected->getProperty('fields');
         $this->fields->setAccessible(true);
+
+        $this->tempFile = '/tmp/test.pdf';
+
+        $this->setUpHttpMock();
+    }
+
+    public function tearDown()
+    {
+        if (file_exists($this->tempFile)) {
+            unlink($this->tempFile);
+        }
+
+        $this->tearDownHttpMock();
     }
 
     public function testSetPageWidth()
@@ -219,6 +254,44 @@ class PdfkiwiTest extends TestCase
         ]);
     }
 
+    public function testConvertHtmlToPdfString()
+    {
+        $pdfResponse = 'This emulate a well formed PDF, which contains the title "Testing pdf.kiwi".';
+
+        $this->http->mock->when()
+            ->methodIs('POST')
+            ->pathIs('/api/convert/html/')
+            ->then()
+            ->statusCode(Response::HTTP_OK)
+            ->body($pdfResponse)
+            ->end();
+        $this->http->setUp();
+
+        // - Converting HTML to PDF and get the response as string
+        $result = $this->pdfKiwi->convertHtml('<h1>Testing pdf.kiwi</h1>');
+        $this->assertEquals($result, $pdfResponse);
+    }
+
+    public function testConvertHtmlToPdfFile()
+    {
+        $pdfResponse = 'This emulate a well formed PDF, which contains the title "Testing pdf.kiwi".';
+
+        $this->http->mock->when()
+            ->methodIs('POST')
+            ->pathIs('/api/convert/html/')
+            ->then()
+            ->statusCode(Response::HTTP_OK)
+            ->body($pdfResponse)
+            ->end();
+        $this->http->setUp();
+
+        // - Converting HTML to PDF and save the response into a file
+        $fileResource = fopen($this->tempFile, 'w');
+        $result       = $this->pdfKiwi->convertHtml('<h1>Testing pdf.kiwi</h1>', $fileResource);
+        $this->assertEquals($result, true);
+        $this->assertEquals(file_get_contents($this->tempFile), $pdfResponse);
+    }
+
     public function testConvertHtmlFailNotEmpty()
     {
         // - Send html to pdf.kiwi API
@@ -226,10 +299,50 @@ class PdfkiwiTest extends TestCase
         $this->pdfKiwi->convertHtml('');
     }
 
-    public function testConvertHtmlUnauthorized()
+    public function testConvertHtmlToPdfStringUnauthorized()
     {
-        // - Send html to pdf.kiwi API
-        $this->expectExceptionMessage('Unauthorized');
+        $responseBody = [
+            'success' => false,
+            'error'   => [
+                'message' => 'The email address does not correspond to any account.',
+                'code'    => 40
+            ]
+        ];
+        $this->http->mock->when()
+            ->methodIs('POST')
+            ->pathIs('/api/convert/html/')
+            ->then()
+            ->statusCode(Response::HTTP_UNAUTHORIZED)
+            ->body(json_encode($responseBody))
+            ->end();
+        $this->http->setUp();
+
+        // - Fail because of bad credentials
+        $this->expectExceptionMessage('The email address does not correspond to any account.');
         $this->pdfKiwi->convertHtml('<h1>Testing pdf.kiwi</h1>');
+    }
+
+    public function testConvertHtmlToPdfFileUnauthorized()
+    {
+        $responseBody = [
+            'success' => false,
+            'error'   => [
+                'message' => 'The email address does not correspond to any account.',
+                'code'    => 40
+            ]
+        ];
+        $this->http->mock->when()
+            ->methodIs('POST')
+            ->pathIs('/api/convert/html/')
+            ->then()
+            ->statusCode(Response::HTTP_UNAUTHORIZED)
+            ->body(json_encode($responseBody))
+            ->end();
+        $this->http->setUp();
+
+        // - Fail because of bad credentials
+        $fileResource = fopen($this->tempFile, 'w');
+        $this->expectExceptionMessage('The email address does not correspond to any account.');
+        $this->pdfKiwi->convertHtml('<h1>Testing pdf.kiwi</h1>', $fileResource);
     }
 }
