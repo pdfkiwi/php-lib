@@ -4,7 +4,9 @@ namespace PdfKiwi;
 class PdfKiwi
 {
     public static $libVersion = "0.1.7";
-    public static $apiHost    = 'https://pdf.kiwi';
+
+    private static $apiHost = 'https://pdf.kiwi';
+    private static $apiPort = 443;
 
     private $apiPrefix;
     private $userAgent;
@@ -210,16 +212,18 @@ class PdfKiwi
         }
 
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HEADER, false);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_PORT, 443);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $postfields);
-        curl_setopt($curl, CURLOPT_DNS_USE_GLOBAL_CACHE, false);
-        curl_setopt($curl, CURLOPT_USERAGENT, $this->userAgent);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt_array($curl, [
+            CURLOPT_URL                  => $url,
+            CURLOPT_HEADER               => false,
+            CURLOPT_CONNECTTIMEOUT       => 10,
+            CURLOPT_RETURNTRANSFER       => true,
+            CURLOPT_POST                 => true,
+            CURLOPT_PORT                 => self::$apiPort,
+            CURLOPT_POSTFIELDS           => $postfields,
+            CURLOPT_DNS_USE_GLOBAL_CACHE => false,
+            CURLOPT_USERAGENT            => $this->userAgent,
+            CURLOPT_SSL_VERIFYPEER       => true
+        ]);
 
         if ($outstream) {
             $this->outstream = $outstream;
@@ -258,8 +262,11 @@ class PdfKiwi
         }
 
         if ($this->httpResponseCode >= 400) {
-            $this->errorMessage = $this->errorMessage . $data;
-            return strlen($data);
+            $jsonResponse = json_decode($data, true);
+            throw new PdfKiwiException(
+                ($jsonResponse) ? $jsonResponse['error']['message'] : $response,
+                ($jsonResponse) ? $jsonResponse['error']['code'] : $this->httpResponseCode
+            );
         }
 
         $written = fwrite($this->outstream, $data);
