@@ -1,6 +1,7 @@
 ## 0.2.0 (unreleased)
 - URL de l'API hardcodé (suppression des paramètres 2 et 3 du constructor) (#11).
 - Ajout des dépendances à PHPCS et Phpunit.
+- Traduction de la documentation inline en Anglais (#15).
 
 ## 0.1.7 (2017-05-16)
 - Suppression d'un fichier en doublon (`PdfKiwiException`) (#6)
