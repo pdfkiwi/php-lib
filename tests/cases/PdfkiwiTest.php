@@ -11,7 +11,7 @@ class PdfkiwiTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        static::setUpHttpMockBeforeClass('8082', 'localhost');
+        static::setUpHttpMockBeforeClass('28080', 'localhost');
     }
 
     public static function tearDownAfterClass()
@@ -30,7 +30,7 @@ class PdfkiwiTest extends TestCase
 
         $apiHostProperty = $pdfKiwiReflected->getProperty('apiPort');
         $apiHostProperty->setAccessible(true);
-        $apiHostProperty->setValue('8082');
+        $apiHostProperty->setValue('28080');
 
         $this->fields = $pdfKiwiReflected->getProperty('fields');
         $this->fields->setAccessible(true);
