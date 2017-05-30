@@ -4,14 +4,22 @@ use PdfKiwi\PdfKiwiException;
 
 class PdfKiwiExceptionTest extends TestCase
 {
-    public function setUp()
+    public function testPdfKiwiExceptionToString()
     {
-        // ...
-    }
+        $pdfKiwiException = new PdfKiwiException("message", 10);
+        $result           = $pdfKiwiException->__toString();
+        $this->assertEquals($result, "[10] message\n");
 
-    public function testDemo()
-    {
-        // $pdfkiwi = new PdfKiwiException(...);
-        $this->markTestIncomplete();
+        $pdfKiwiException = new PdfKiwiException("message", 0);
+        $result           = $pdfKiwiException->__toString();
+        $this->assertEquals($result, "message\n");
+
+        $pdfKiwiException = new PdfKiwiException("message");
+        $result           = $pdfKiwiException->__toString();
+        $this->assertEquals($result, "message\n");
+
+        $pdfKiwiException = new PdfKiwiException();
+        $result           = $pdfKiwiException->__toString();
+        $this->assertEquals($result, "\n");
     }
 }
