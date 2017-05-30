@@ -191,7 +191,7 @@ class PdfKiwi
 
         $this->fields['html'] = $src;
 
-        $uri        = sprintf('%s/generator/render/', $this->apiPrefix);
+        $uri        = sprintf('%s/convert/html/', $this->apiPrefix);
         $postfields = http_build_query($this->fields);
 
         return $this->__httpPost($uri, $postfields, $outstream);
