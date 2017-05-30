@@ -16,8 +16,8 @@ class PdfKiwi
     /**
      * PdfKiwi constructor
      *
-     * @param string $email L'adresse email du client
-     * @param string $apiToken Le token du client
+     * @param string $email Email address of a pdf.kiwi customer
+     * @param string $apiToken Api key of the choosen customer's subscription
      */
     public function __construct($email, $apiToken)
     {
@@ -33,9 +33,9 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir la largeur de page
+     * To set the page width
      *
-     * @param string $value La largeur du document, avec l'unité (ex. 210mm)
+     * @param string $value The document's page width, with unit (eg. '210mm')
      */
     public function setPageWidth($value)
     {
@@ -43,9 +43,9 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir la hauteur de page
+     * To set the page height
      *
-     * @param string $value La hauteur du document, avec l'unité (ex. 297mm)
+     * @param string $value The document's page height, with unit (eg. '297mm')
      */
     public function setPageHeight($value)
     {
@@ -53,9 +53,9 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir un en-tête de page au format HTML
+     * To set a HTML page header
      *
-     * @param string $value Le contenu HTML du header
+     * @param string $value The HTML content of the header
      */
     public function setHeaderHtml($value)
     {
@@ -64,9 +64,9 @@ class PdfKiwi
 
 
     /**
-     * Pour définir l'espacement entre l'en tête de page et le corps du document
+     * To set the space between the header and the document's body
      *
-     * @param float $value l'espacement (en mm) entre le header et le corps, sans l'unité
+     * @param float $value the space (in mm) between the header and the body, without unit
      */
     public function setHeaderSpacing($value)
     {
@@ -76,11 +76,11 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir un en-tête de page au format TEXTE
+     * To set some TEXT page headers
      *
-     * @param mixed $value Peut être soit :
-     *      - string Le contenu (texte) du header (sera aligné à gauche)
-     *      - array  Tableau avec 3 valeurs : [left, center, right]
+     * @param mixed $value Can be either :
+     *      - string The (text) content of the header (will be left aligned)
+     *      - array  An array with 3 values of text, respectively : [left, center, right]
      */
     public function setHeaderText($value)
     {
@@ -94,9 +94,9 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir un pied de page au format HTML
+     * To set a HTML page footer
      *
-     * @param string $value Le contenu HTML du footer
+     * @param string $value The HTML content of the footer
      */
     public function setFooterHtml($value)
     {
@@ -104,9 +104,9 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir l'espacement entre le pied de page et le corps du document
+     * To set the space between the footer and the document's body
      *
-     * @param float $value l'espacement (en mm) entre le footer et le corps, sans l'unité
+     * @param float $value the space (in mm) between the footer and the body, without unit
      */
     public function setFooterSpacing($value)
     {
@@ -116,11 +116,11 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir un pied de page au format TEXTE
+     * To set some TEXT page footers
      *
-     * @param mixed $value Peut être soit :
-     *      - string Le contenu (texte) du footer (sera aligné à gauche)
-     *      - array  Tableau avec 3 valeurs : [left, center, right]
+     * @param mixed $value Can be either :
+     *      - string The (text) content of the footer (will be left aligned)
+     *      - array  An array with 3 values of text, respectively : [left, center, right]
      */
     public function setFooterText($value)
     {
@@ -134,11 +134,11 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir une liste de numéros de pages sur lesquelles n'apparaîtront pas les header et footer
+     * To set a list of pages numbers on which the header and footer won't be printed
      *
-     * @param mixed $value Peut être soit :
-     *      - string Une liste de numéros de pages, séparés par des virgules (sans espace)
-     *      - array  Un Tableau comportant la liste des numéros de page à exclure
+     * @param mixed $value Can be either :
+     *      - string A comma separated list of page numbers (without space, eg. '1,3,5')
+     *      - array  An array with a list of page numbers (eg. [1, 3, 5])
      */
     public function setHeaderFooterPageExcludeList($value)
     {
@@ -150,12 +150,12 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir les marges des pages
+     * To set page's margins
      *
-     * @param string $top La valeur de la marge du haut, avec l'unité (ex. 20mm)
-     * @param string $right La valeur de la marge de droite, avec l'unité (ex. 20mm)
-     * @param string $bottom La valeur de la marge du bas, avec l'unité (ex. 20mm)
-     * @param string $left La valeur de la marge de gauche, avec l'unité (ex. 20mm)
+     * @param string $top Top margin value, with unit (eg. '20mm')
+     * @param string $right Right margin value, with unit (eg. '20mm')
+     * @param string $bottom Bottom margin value, with unit (eg. '20mm')
+     * @param string $left Left margin value, with unit (eg. '20mm')
      */
     public function setPageMargins($top, $right, $bottom, $left)
     {
@@ -166,9 +166,9 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir l'orientation des pages
+     * To set page's orientation
      *
-     * @param string $orientation L'orientation de la page. Soit 'landscape', soit 'portrait'
+     * @param string $orientation The page's orientation. Can be either 'landscape', or 'portrait'
      */
     public function setOrientation($orientation)
     {
@@ -176,12 +176,12 @@ class PdfKiwi
     }
 
     /**
-     * Pour convertir un document HTML se trouvant en mémoire
+     * To convert an HTML string into PDF (calling pdf.kiwi API)
      *
-     * @param string $src Le contenu du document HTML à convertir
-     * @param string $outstream Si défini, enregistre la sortie dans un fichier : il faut spécifier un chemin et un nom de fichier.
-     *                          Si null, retourne une chaîne contenant le PDF
-     * @return string Le résultat de la conversion en PDF
+     * @param string $src The HTML document's content to convert
+     * @param string $outstream If null, returns a string containing the PDF
+     *                          If defined, save the output into a file. It must set a path and filename
+     * @return string The result of the PDF conversion
      */
     public function convertHtml($src, $outstream = null)
     {
@@ -199,7 +199,7 @@ class PdfKiwi
 
     // ——————————————————————————————————————————————————————
     // —
-    // —    Méthodes privées
+    // —    Private Methods
     // —
     // ——————————————————————————————————————————————————————
 
