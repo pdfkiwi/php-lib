@@ -1,3 +1,7 @@
+## 0.3.0 (unreleased)
+- Open sourced the project on Github.
+- Translated `CONTRIBUTING.md` in english.
+
 ## 0.2.1 (2017-05-31)
 - Fix: Update the `Pdfkiwi::$libVersion` version to `0.2.1`.
 
