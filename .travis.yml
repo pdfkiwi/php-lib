@@ -23,4 +23,4 @@ script:
     - ./vendor/bin/phpunit
 
 after_success:
-    - travis_retry php ./vendor/bin/coveralls
+    - travis_retry php ./vendor/bin/coveralls --coverage_clover=./tests/coverage/clover.xml
