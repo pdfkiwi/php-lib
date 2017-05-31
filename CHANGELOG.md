@@ -3,6 +3,8 @@
 - Added dev-dependencies: `phpcs` and `phpunit`.
 - English translation of the `Pdfkiwi` class inline documentation.
 - English translation of README.md and CHANGELOG.md files.
+- Renvoi d'une erreur quand le code HTTP de la réponse est inférieur à 200 ou
+  supérieur ou égal à 300, non plus seulement différent de 200 (#12).
 
 ## 0.1.7 (2017-05-16)
 - Deleted a duplicate file (`PdfKiwiException`).

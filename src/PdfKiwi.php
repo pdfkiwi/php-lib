@@ -240,7 +240,7 @@ class PdfKiwi
             throw new PdfKiwiException($this->errorMessage, $this->errorNumber);
         }
 
-        if ($this->httpResponseCode !== 200) {
+        if ($this->httpResponseCode < 200 || $this->httpResponseCode >= 300) {
             $jsonResponse = json_decode($response, true);
             throw new PdfKiwiException(
                 ($jsonResponse) ? $jsonResponse['error']['message'] : $response,
