@@ -1,6 +1,8 @@
-pdfkiwi/php-lib — Guide de contribution
+pdfkiwi/php-lib — Contribution guide
 ---
 
-## Changement de version
+## Version changes
 
-Lorsqu'on incrémente le numéro de version, ne pas oublier de mettre à jour le *composer.json*, mais **AUSSI** la variable `$libVersion` qui se trouve à la ligne 6 du fichier `src/PdfKiwi.php`.
+When the version is bumped, do not forget to:
+- Update the composer.json (:sweat_smile:).
+- Update the `$libVersion` variable in `src/PdfKiwi.php`.

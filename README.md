@@ -1,9 +1,9 @@
 # pdfkiwi/php-lib
 
-> PHP library to use the [pdf.kiwi](https://pdf.kiwi) API
+> A PHP library for interacting with [pdf.kiwi](https://pdf.kiwi) API
 
-[![build status](https://gitlab.insolus.net/pdf.kiwi/php-lib/badges/master/build.svg)](https://gitlab.insolus.net/pdf.kiwi/php-lib/commits/master)
-[![coverage report](https://gitlab.insolus.net/pdf.kiwi/php-lib/badges/master/coverage.svg)](https://gitlab.insolus.net/pdf.kiwi/php-lib/commits/master)
+[![Build Status](https://travis-ci.org/pdfkiwi/php-lib.svg?branch=master)](https://travis-ci.org/pdfkiwi/php-lib)
+[![Coverage Status](https://coveralls.io/repos/github/pdfkiwi/php-lib/badge.svg?branch=master)](https://coveralls.io/github/pdfkiwi/php-lib?branch=master)
 
 ## Installation
 

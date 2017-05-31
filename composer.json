@@ -1,10 +1,16 @@
 {
-    "name"    : "pdfkiwi/php-lib",
-    "version" : "0.2.1",
-    "type"    : "library",
-    "private" : true,
-    "require" : {
-        "php" : ">=5.4"
+    "name"        : "pdfkiwi/php-lib",
+    "description" : "A PHP library for interacting with pdf.kiwi API",
+    "version"     : "0.3.0",
+    "type"        : "library",
+    "license"     : "MIT",
+    "require"     : {
+        "php" : ">=5.6"
+    },
+    "homepage" : "https://pdf.kiwi",
+    "support"  : {
+        "source" : "https://github.com/pdfkiwi/php-lib",
+        "issues" : "https://github.com/pdfkiwi/php-lib/issues"
     },
     "autoload": {
         "psr-4": {
@@ -14,6 +20,7 @@
     "require-dev": {
         "phpunit/phpunit"           : "^5.7",
         "internations/http-mock"    : "^0.8",
-        "squizlabs/php_codesniffer" : "^3.0"
+        "squizlabs/php_codesniffer" : "^3.0",
+        "satooshi/php-coveralls"    : "^1.0"
     }
 }

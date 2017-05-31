@@ -3,7 +3,7 @@ namespace PdfKiwi;
 
 class PdfKiwi
 {
-    public static $libVersion = '0.2.1';
+    public static $libVersion = '0.3.0';
 
     private static $apiHost = 'https://pdf.kiwi';
     private static $apiPort = 443;
@@ -213,16 +213,15 @@ class PdfKiwi
 
         $curl = curl_init();
         curl_setopt_array($curl, [
-            CURLOPT_URL                  => $url,
-            CURLOPT_HEADER               => false,
-            CURLOPT_CONNECTTIMEOUT       => 10,
-            CURLOPT_RETURNTRANSFER       => true,
-            CURLOPT_POST                 => true,
-            CURLOPT_PORT                 => self::$apiPort,
-            CURLOPT_POSTFIELDS           => $postfields,
-            CURLOPT_DNS_USE_GLOBAL_CACHE => false,
-            CURLOPT_USERAGENT            => $this->userAgent,
-            CURLOPT_SSL_VERIFYPEER       => true
+            CURLOPT_URL            => $url,
+            CURLOPT_HEADER         => false,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST           => true,
+            CURLOPT_PORT           => self::$apiPort,
+            CURLOPT_POSTFIELDS     => $postfields,
+            CURLOPT_USERAGENT      => $this->userAgent,
+            CURLOPT_SSL_VERIFYPEER => true
         ]);
 
         if ($outstream) {
