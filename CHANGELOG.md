@@ -1,4 +1,4 @@
-## 0.3.0 (unreleased)
+## 0.3.0 (2017-05-31)
 - Open sourced the project on Github.
 - Removed Gitlab CI.
 - Added coveralls coverage report.
