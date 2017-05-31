@@ -7,7 +7,7 @@ before_script:
     - pecl install xdebug &>/dev/null
     - docker-php-ext-enable xdebug &>/dev/null
     - curl -sS https://getcomposer.org/installer | php &>/dev/null
-    - php composer.phar install
+    - php composer.phar install &>/dev/null
 
 "Lint: php":
     stage  : test
