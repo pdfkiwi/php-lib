@@ -7,6 +7,7 @@
     <php>
         <ini name="memory_limit" value="-1"/>
         <ini name="apc.enable_cli" value="1"/>
+        <ini name="date.timezone" value="Europe/Zurich"/>
     </php>
     <testsuites>
         <testsuite name="Test Suite">
