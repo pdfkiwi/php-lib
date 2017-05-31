@@ -1,7 +1,7 @@
 {
     "name"        : "pdfkiwi/php-lib",
     "description" : "A PHP library for interacting with pdf.kiwi API",
-    "version"     : "0.2.1",
+    "version"     : "0.3.0",
     "type"        : "library",
     "license"     : "MIT",
     "require"     : {

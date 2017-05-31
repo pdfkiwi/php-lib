@@ -3,7 +3,7 @@ namespace PdfKiwi;
 
 class PdfKiwi
 {
-    public static $libVersion = '0.2.1';
+    public static $libVersion = '0.3.0';
 
     private static $apiHost = 'https://pdf.kiwi';
     private static $apiPort = 443;
