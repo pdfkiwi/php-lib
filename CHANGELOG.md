@@ -1,6 +1,7 @@
 ## 0.3.0 (unreleased)
 - Open sourced the project on Github.
 - Removed Gitlab CI.
+- Added coveralls coverage report.
 - Translated `CONTRIBUTING.md` in english.
 
 ## 0.2.1 (2017-05-31)
