@@ -4,6 +4,7 @@
 - Added coveralls coverage report.
 - Translated `CONTRIBUTING.md` in english.
 - Updated the composer.json with projet informations.
+- Removed the deprecated `CURLOPT_DNS_USE_GLOBAL_CACHE` option.
 
 ## 0.2.1 (2017-05-31)
 - Fix: Update the `Pdfkiwi::$libVersion` version to `0.2.1`.
