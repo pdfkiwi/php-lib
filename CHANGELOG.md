@@ -3,6 +3,7 @@
 - Removed Gitlab CI.
 - Added coveralls coverage report.
 - Translated `CONTRIBUTING.md` in english.
+- Updated the composer.json with projet informations.
 
 ## 0.2.1 (2017-05-31)
 - Fix: Update the `Pdfkiwi::$libVersion` version to `0.2.1`.
