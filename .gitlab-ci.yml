@@ -1,9 +1,12 @@
-image: composer/composer:php5
+image: php:5.6
 
 before_script:
+    - apt-get update -yqq &>/dev/null
+    - apt-get install git -yqq &>/dev/null
     - pecl install xdebug &>/dev/null
     - docker-php-ext-enable xdebug &>/dev/null
-    - composer install &>/dev/null
+    - curl -sS https://getcomposer.org/installer | php &>/dev/null
+    - php composer.phar install &>/dev/null
 
 "Lint: php":
     stage  : test
