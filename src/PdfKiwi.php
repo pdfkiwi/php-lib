@@ -4,36 +4,26 @@ namespace PdfKiwi;
 class PdfKiwi
 {
     public static $libVersion = "0.1.7";
-    public static $httpPort   = 80;
-    public static $httpsPort  = 443;
-    public static $apiHost    = 'pdf.kiwi';
 
-    private $hostname;
+    private static $apiHost = 'https://pdf.kiwi';
+    private static $apiPort = 443;
+
+    private $apiPrefix;
     private $userAgent;
     private $fields;
-    private $scheme;
-    private $apiPrefix;
-    private $port;
-    private $httpCode;
+    private $httpResponseCode;
     private $errorNumber;
     private $errorMessage;
 
     /**
      * PdfKiwi constructor
      *
-     * @param string $email L'adresse email du client
-     * @param string $apiToken Le token du client
-     * @param string $hostname L'adresse de l'API de pdf.kiwi (par défaut 'pdf.kiwi')
+     * @param string $email Email address of a pdf.kiwi customer
+     * @param string $apiToken Api key of the choosen customer's subscription
      */
-    public function __construct($email, $apiToken, $hostname = null, $useSSL = true)
+    public function __construct($email, $apiToken)
     {
-        if ($hostname) {
-            $this->hostname = $hostname;
-        } else {
-            $this->hostname = self::$apiHost;
-        }
-
-        $this->_initApiUrl($useSSL);
+        $this->apiPrefix = sprintf('%s/api', self::$apiHost);
 
         $this->fields = [
             'email'   => $email,
@@ -45,27 +35,9 @@ class PdfKiwi
     }
 
     /**
-     * Initialise l'adresse de l'API
+     * To set the page width
      *
-     * @param boolean $useSSL True pour utiliser SSL, false sinon.
-     */
-    private function _initApiUrl($useSSL)
-    {
-        if ($useSSL) {
-            $this->port   = self::$httpsPort;
-            $this->scheme = 'https';
-        } else {
-            $this->port   = self::$httpPort;
-            $this->scheme = 'http';
-        }
-
-        $this->apiPrefix = sprintf('%s://%s/api', $this->scheme, $this->hostname);
-    }
-
-    /**
-     * Pour définir la largeur de page
-     *
-     * @param string $value La largeur du document, avec l'unité (ex. 210mm)
+     * @param string $value The document's page width, with unit (eg. '210mm')
      */
     public function setPageWidth($value)
     {
@@ -73,9 +45,9 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir la hauteur de page
+     * To set the page height
      *
-     * @param string $value La hauteur du document, avec l'unité (ex. 297mm)
+     * @param string $value The document's page height, with unit (eg. '297mm')
      */
     public function setPageHeight($value)
     {
@@ -83,9 +55,9 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir un en-tête de page au format HTML
+     * To set a HTML page header
      *
-     * @param string $value Le contenu HTML du header
+     * @param string $value The HTML content of the header
      */
     public function setHeaderHtml($value)
     {
@@ -94,9 +66,9 @@ class PdfKiwi
 
 
     /**
-     * Pour définir l'espacement entre l'en tête de page et le corps du document
+     * To set the space between the header and the document's body
      *
-     * @param float $value l'espacement (en mm) entre le header et le corps, sans l'unité
+     * @param float $value the space (in mm) between the header and the body, without unit
      */
     public function setHeaderSpacing($value)
     {
@@ -106,11 +78,11 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir un en-tête de page au format TEXTE
+     * To set some TEXT page headers
      *
-     * @param mixed $value Peut être soit :
-     *      - string Le contenu (texte) du header (sera aligné à gauche)
-     *      - array  Tableau avec 3 valeurs : [left, center, right]
+     * @param mixed $value Can be either :
+     *      - string The (text) content of the header (will be left aligned)
+     *      - array  An array with 3 values of text, respectively : [left, center, right]
      */
     public function setHeaderText($value)
     {
@@ -124,9 +96,9 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir un pied de page au format HTML
+     * To set a HTML page footer
      *
-     * @param string $value Le contenu HTML du footer
+     * @param string $value The HTML content of the footer
      */
     public function setFooterHtml($value)
     {
@@ -134,9 +106,9 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir l'espacement entre le pied de page et le corps du document
+     * To set the space between the footer and the document's body
      *
-     * @param float $value l'espacement (en mm) entre le footer et le corps, sans l'unité
+     * @param float $value the space (in mm) between the footer and the body, without unit
      */
     public function setFooterSpacing($value)
     {
@@ -146,11 +118,11 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir un pied de page au format TEXTE
+     * To set some TEXT page footers
      *
-     * @param mixed $value Peut être soit :
-     *      - string Le contenu (texte) du footer (sera aligné à gauche)
-     *      - array  Tableau avec 3 valeurs : [left, center, right]
+     * @param mixed $value Can be either :
+     *      - string The (text) content of the footer (will be left aligned)
+     *      - array  An array with 3 values of text, respectively : [left, center, right]
      */
     public function setFooterText($value)
     {
@@ -164,11 +136,11 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir une liste de numéros de pages sur lesquelles n'apparaîtront pas les header et footer
+     * To set a list of pages numbers on which the header and footer won't be printed
      *
-     * @param mixed $value Peut être soit :
-     *      - string Une liste de numéros de pages, séparés par des virgules (sans espace)
-     *      - array  Un Tableau comportant la liste des numéros de page à exclure
+     * @param mixed $value Can be either :
+     *      - string A comma separated list of page numbers (without space, eg. '1,3,5')
+     *      - array  An array with a list of page numbers (eg. [1, 3, 5])
      */
     public function setHeaderFooterPageExcludeList($value)
     {
@@ -180,12 +152,12 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir les marges des pages
+     * To set page's margins
      *
-     * @param string $top La valeur de la marge du haut, avec l'unité (ex. 20mm)
-     * @param string $right La valeur de la marge de droite, avec l'unité (ex. 20mm)
-     * @param string $bottom La valeur de la marge du bas, avec l'unité (ex. 20mm)
-     * @param string $left La valeur de la marge de gauche, avec l'unité (ex. 20mm)
+     * @param string $top Top margin value, with unit (eg. '20mm')
+     * @param string $right Right margin value, with unit (eg. '20mm')
+     * @param string $bottom Bottom margin value, with unit (eg. '20mm')
+     * @param string $left Left margin value, with unit (eg. '20mm')
      */
     public function setPageMargins($top, $right, $bottom, $left)
     {
@@ -196,9 +168,9 @@ class PdfKiwi
     }
 
     /**
-     * Pour définir l'orientation des pages
+     * To set page's orientation
      *
-     * @param string $orientation L'orientation de la page. Soit 'landscape', soit 'portrait'
+     * @param string $orientation The page's orientation. Can be either 'landscape', or 'portrait'
      */
     public function setOrientation($orientation)
     {
@@ -206,12 +178,12 @@ class PdfKiwi
     }
 
     /**
-     * Pour convertir un document HTML se trouvant en mémoire
+     * To convert an HTML string into PDF (calling pdf.kiwi API)
      *
-     * @param string $src Le contenu du document HTML
-     * @param string $outstream Si défini, enregistre la sortie dans un fichier : il faut spécifier un chemin et un nom de fichier.
-     *                          Si null, retourne une chaîne contenant le PDF
-     * @return string Le résultat de la conversion en PDF
+     * @param string $src The HTML document's content to convert
+     * @param string $outstream If null, returns a string containing the PDF
+     *                          If defined, save the output into a file. It must set a path and filename
+     * @return string The result of the PDF conversion
      */
     public function convertHtml($src, $outstream = null)
     {
@@ -220,14 +192,16 @@ class PdfKiwi
         }
 
         $this->fields['html'] = $src;
-        $uri = sprintf('%s/generator/render/', $this->apiPrefix);
+
+        $uri        = sprintf('%s/convert/html/', $this->apiPrefix);
         $postfields = http_build_query($this->fields);
+
         return $this->__httpPost($uri, $postfields, $outstream);
     }
 
     // ——————————————————————————————————————————————————————
     // —
-    // —    Méthodes privées
+    // —    Private Methods
     // —
     // ——————————————————————————————————————————————————————
 
@@ -238,29 +212,31 @@ class PdfKiwi
         }
 
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HEADER, false);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_PORT, $this->port);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $postfields);
-        curl_setopt($curl, CURLOPT_DNS_USE_GLOBAL_CACHE, false);
-        curl_setopt($curl, CURLOPT_USERAGENT, $this->userAgent);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, ($this->scheme === 'https' && self::$apiHost === 'pdf.kiwi'));
+        curl_setopt_array($curl, [
+            CURLOPT_URL                  => $url,
+            CURLOPT_HEADER               => false,
+            CURLOPT_CONNECTTIMEOUT       => 10,
+            CURLOPT_RETURNTRANSFER       => true,
+            CURLOPT_POST                 => true,
+            CURLOPT_PORT                 => self::$apiPort,
+            CURLOPT_POSTFIELDS           => $postfields,
+            CURLOPT_DNS_USE_GLOBAL_CACHE => false,
+            CURLOPT_USERAGENT            => $this->userAgent,
+            CURLOPT_SSL_VERIFYPEER       => true
+        ]);
 
         if ($outstream) {
             $this->outstream = $outstream;
             curl_setopt($curl, CURLOPT_WRITEFUNCTION, [$this, '__receiveToStream']);
         }
 
-        $this->httpCode = 0;
+        $this->httpResponseCode = 0;
 
         $response = curl_exec($curl);
 
-        $this->httpCode     = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $this->errorNumber  = curl_errno($curl);
-        $this->errorMessage = curl_error($curl);
+        $this->httpResponseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $this->errorNumber      = curl_errno($curl);
+        $this->errorMessage     = curl_error($curl);
 
         curl_close($curl);
 
@@ -268,11 +244,11 @@ class PdfKiwi
             throw new PdfKiwiException($this->errorMessage, $this->errorNumber);
         }
 
-        if ($this->httpCode !== 200) {
+        if ($this->httpResponseCode < 200 || $this->httpResponseCode >= 300) {
             $jsonResponse = json_decode($response, true);
             throw new PdfKiwiException(
                 ($jsonResponse) ? $jsonResponse['error']['message'] : $response,
-                ($jsonResponse) ? $jsonResponse['error']['code'] : $this->httpCode
+                ($jsonResponse) ? $jsonResponse['error']['code'] : $this->httpResponseCode
             );
         }
 
@@ -281,13 +257,16 @@ class PdfKiwi
 
     private function __receiveToStream($curl, $data)
     {
-        if ($this->httpCode === 0) {
-            $this->httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        if ($this->httpResponseCode === 0) {
+            $this->httpResponseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         }
 
-        if ($this->httpCode >= 400) {
-            $this->errorMessage = $this->errorMessage . $data;
-            return strlen($data);
+        if ($this->httpResponseCode >= 400) {
+            $jsonResponse = json_decode($data, true);
+            throw new PdfKiwiException(
+                ($jsonResponse) ? $jsonResponse['error']['message'] : $response,
+                ($jsonResponse) ? $jsonResponse['error']['code'] : $this->httpResponseCode
+            );
         }
 
         $written = fwrite($this->outstream, $data);

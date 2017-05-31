@@ -1,27 +1,35 @@
+## 0.2.0 (2017-05-31)
+- Removed the ability to set the API's URL (now hard-coded in the library).
+- Added dev-dependencies: `phpcs` and `phpunit`.
+- English translation of the `Pdfkiwi` class inline documentation.
+- English translation of README.md and CHANGELOG.md files.
+- Renvoi d'une erreur quand le code HTTP de la réponse est inférieur à 200 ou
+  supérieur ou égal à 300, non plus seulement différent de 200 (#12).
+
 ## 0.1.7 (2017-05-16)
-- Suppression d'un fichier en doublon (`PdfKiwiException`) (#6)
-- Mise à jour du Readme avec la nouvelle adresse du repository `pdf.kiwi` (#8)
-- Normalisation du Changelog : ajout des dates de release (#7)
+- Deleted a duplicate file (`PdfKiwiException`).
+- Updated README with the new API address of `pdf.kiwi/php-lib`.
+- Changelog normalizing: added release dates.
 
 ## 0.1.6 (2017-04-07)
-- Support de l'option d'exclusion du header et du footer dans certaines pages : 
-  `header_footer_exclude_pages` (#5) -> voir version 0.7.1 de l'API pdf.kiwi.
+- Added support of `header_footer_exclude_pages` option (to exclude footer and
+  header from being rendered on some pages).
 
 ## 0.1.5 (2017-04-06)
-- Support des options d'espacement du header et du footer : `header_spacing` et 
-  `footer_spacing` (#4) -> voir version 0.7.0 de l'API pdf.kiwi.
+- Added support of header and footer's spacing options: `header_spacing` and 
+  `footer_spacing`.
 
 ## 0.1.4 (2017-03-28)
-- Utilisation de SSL pour l'adresse par défaut de l'API (https://pdf.kiwi) (#3)
+- Using SSL for default API endpoint address (https://pdf.kiwi).
 
 ## 0.1.3 (2017-03-03)
-- Ajout des méthodes `setHeaderText()` et `setFooterText()` (#2)
+- Added methods `setHeaderText()` and `setFooterText()`.
 
 ## 0.1.2 (2017-02-24)
-- Amélioration de la gestion des retours d'erreur API
+- Errors returned by API are better managed.
 
 ## 0.1.1 (2017-02-23)
-- Fix bug d'autoload : déplacement des fichiers dans src/ (après vérifications)
+- Fixed autoload bug: moving files in src/ (after verifications).
 
 ## 0.1.0 (2017-02-23)
-- Création de la librairie PHP pour utiliser l'API de PdfKiwi avec les options de base
+- Creation of the PHP library to use pdf.kiwi API, with basic options.
