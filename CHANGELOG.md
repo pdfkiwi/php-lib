@@ -1,4 +1,4 @@
-## 0.2.0 (unreleased)
+## 0.2.0 (2017-05-31)
 - Removed the ability to set the API's URL (now hard-coded in the library).
 - Added dev-dependencies: `phpcs` and `phpunit`.
 - English translation of the `Pdfkiwi` class inline documentation.
