@@ -75,6 +75,30 @@ class PdfkiwiTest extends TestCase
         ]);
     }
 
+    public function testSetPageSize()
+    {
+        // - Page Size
+        $this->pdfKiwi->setPageSize('A3');
+        $this->assertEquals($this->fields->getValue($this->pdfKiwi), [
+            'email'   => 'test@test.org',
+            'token'   => 'ca4e46cf6f31155e25dd1168ecbc38f9',
+            'options' => [
+                'page_size' => 'A3'
+            ]
+        ]);
+    }
+
+    public function testSetPageSizeFail()
+    {
+        // - Set unknown value for page size
+        $this->expectExceptionMessage(
+            'The page size must be one of: [A0, A1, A2, A3, A4, A5, A6, A7, A8, ' .
+            'A9, B0, B1, B2, B3, B4, B5, B6, B7, B8, B9, B10, C5E, Comm10E, DLE, ' .
+            'Executive, Folio, Ledger, Legal, Letter, Tabloid].'
+        );
+        $this->pdfKiwi->setPageSize('unknown page size');
+    }
+
     public function testSetHeaderHtml()
     {
         // - HTML formated header
