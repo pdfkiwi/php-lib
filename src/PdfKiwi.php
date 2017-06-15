@@ -55,6 +55,56 @@ class PdfKiwi
     }
 
     /**
+     * To set the page width
+     *
+     * @param string $value The document's page size (eg. 'A3')
+     * @throws PdfKiwiException if given page size is unknown
+     */
+    public function setPageSize($value)
+    {
+        $allowedPageSize = [
+            'A0',
+            'A1',
+            'A2',
+            'A3',
+            'A4',
+            'A5',
+            'A6',
+            'A7',
+            'A8',
+            'A9',
+            'B0',
+            'B1',
+            'B2',
+            'B3',
+            'B4',
+            'B5',
+            'B6',
+            'B7',
+            'B8',
+            'B9',
+            'B10',
+            'C5E',
+            'Comm10E',
+            'DLE',
+            'Executive',
+            'Folio',
+            'Ledger',
+            'Legal',
+            'Letter',
+            'Tabloid'
+        ];
+        if (!in_array($value, $allowedPageSize)) {
+            throw new PdfKiwiException(sprintf(
+                "The page size must be one of: [%s].",
+                implode(', ', $allowedPageSize)
+            ));
+        }
+
+        $this->fields['options']['page_size'] = $value;
+    }
+
+    /**
      * To set a HTML page header
      *
      * @param string $value The HTML content of the header
