@@ -1,3 +1,7 @@
+## 0.4.0 (2017-06-16)
+- Added `setPageSize()` method to use `page_size` API option.
+- Uncommented unit-tests which use `http-mock`.
+
 ## 0.3.0 (2017-05-31)
 - Open sourced the project on Github.
 - Removed Gitlab CI.

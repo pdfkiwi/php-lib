@@ -75,6 +75,30 @@ class PdfkiwiTest extends TestCase
         ]);
     }
 
+    public function testSetPageSize()
+    {
+        // - Page Size
+        $this->pdfKiwi->setPageSize('A3');
+        $this->assertEquals($this->fields->getValue($this->pdfKiwi), [
+            'email'   => 'test@test.org',
+            'token'   => 'ca4e46cf6f31155e25dd1168ecbc38f9',
+            'options' => [
+                'page_size' => 'A3'
+            ]
+        ]);
+    }
+
+    public function testSetPageSizeFail()
+    {
+        // - Set unknown value for page size
+        $this->expectExceptionMessage(
+            'The page size must be one of: [A0, A1, A2, A3, A4, A5, A6, A7, A8, ' .
+            'A9, B0, B1, B2, B3, B4, B5, B6, B7, B8, B9, B10, C5E, Comm10E, DLE, ' .
+            'Executive, Folio, Ledger, Legal, Letter, Tabloid].'
+        );
+        $this->pdfKiwi->setPageSize('unknown page size');
+    }
+
     public function testSetHeaderHtml()
     {
         // - HTML formated header
@@ -279,70 +303,70 @@ class PdfkiwiTest extends TestCase
         $this->assertEquals($result, $pdfResponse);
     }
 
-    // public function testConvertHtmlToPdfFile()
-    // {
-    //     $pdfResponse = 'This emulate a well formed PDF, which contains the title "Testing pdf.kiwi".';
-    //
-    //     $this->http->mock->when()
-    //         ->methodIs('POST')
-    //         ->pathIs('/api/convert/html/')
-    //         ->then()
-    //         ->statusCode(Response::HTTP_OK)
-    //         ->body($pdfResponse)
-    //         ->end();
-    //     $this->http->setUp();
-    //
-    //     // - Converting HTML to PDF and save the response into a file
-    //     $fileResource = fopen($this->tempFile, 'w');
-    //     $result       = $this->pdfKiwi->convertHtml('<h1>Testing pdf.kiwi</h1>', $fileResource);
-    //     $this->assertEquals($result, true);
-    //     $this->assertEquals(file_get_contents($this->tempFile), $pdfResponse);
-    // }
-    //
-    // public function testConvertHtmlToPdfStringUnauthorized()
-    // {
-    //     $responseBody = [
-    //         'success' => false,
-    //         'error'   => [
-    //             'message' => 'The email address does not correspond to any account.',
-    //             'code'    => 40
-    //         ]
-    //     ];
-    //     $this->http->mock->when()
-    //         ->methodIs('POST')
-    //         ->pathIs('/api/convert/html/')
-    //         ->then()
-    //         ->statusCode(Response::HTTP_UNAUTHORIZED)
-    //         ->body(json_encode($responseBody))
-    //         ->end();
-    //     $this->http->setUp();
-    //
-    //     // - Fail because of bad credentials
-    //     $this->expectExceptionMessage('The email address does not correspond to any account.');
-    //     $this->pdfKiwi->convertHtml('<h1>Testing pdf.kiwi</h1>');
-    // }
-    //
-    // public function testConvertHtmlToPdfFileUnauthorized()
-    // {
-    //     $responseBody = [
-    //         'success' => false,
-    //         'error'   => [
-    //             'message' => 'The email address does not correspond to any account.',
-    //             'code'    => 40
-    //         ]
-    //     ];
-    //     $this->http->mock->when()
-    //         ->methodIs('POST')
-    //         ->pathIs('/api/convert/html/')
-    //         ->then()
-    //         ->statusCode(Response::HTTP_UNAUTHORIZED)
-    //         ->body(json_encode($responseBody))
-    //         ->end();
-    //     $this->http->setUp();
-    //
-    //     // - Fail because of bad credentials
-    //     $fileResource = fopen($this->tempFile, 'w');
-    //     $this->expectExceptionMessage('The email address does not correspond to any account.');
-    //     $this->pdfKiwi->convertHtml('<h1>Testing pdf.kiwi</h1>', $fileResource);
-    // }
+    public function testConvertHtmlToPdfFile()
+    {
+        $pdfResponse = 'This emulate a well formed PDF, which contains the title "Testing pdf.kiwi".';
+
+        $this->http->mock->when()
+            ->methodIs('POST')
+            ->pathIs('/api/convert/html/')
+            ->then()
+            ->statusCode(Response::HTTP_OK)
+            ->body($pdfResponse)
+            ->end();
+        $this->http->setUp();
+
+        // - Converting HTML to PDF and save the response into a file
+        $fileResource = fopen($this->tempFile, 'w');
+        $result       = $this->pdfKiwi->convertHtml('<h1>Testing pdf.kiwi</h1>', $fileResource);
+        $this->assertEquals($result, true);
+        $this->assertEquals(file_get_contents($this->tempFile), $pdfResponse);
+    }
+
+    public function testConvertHtmlToPdfStringUnauthorized()
+    {
+        $responseBody = [
+            'success' => false,
+            'error'   => [
+                'message' => 'The email address does not correspond to any account.',
+                'code'    => 40
+            ]
+        ];
+        $this->http->mock->when()
+            ->methodIs('POST')
+            ->pathIs('/api/convert/html/')
+            ->then()
+            ->statusCode(Response::HTTP_UNAUTHORIZED)
+            ->body(json_encode($responseBody))
+            ->end();
+        $this->http->setUp();
+
+        // - Fail because of bad credentials
+        $this->expectExceptionMessage('The email address does not correspond to any account.');
+        $this->pdfKiwi->convertHtml('<h1>Testing pdf.kiwi</h1>');
+    }
+
+    public function testConvertHtmlToPdfFileUnauthorized()
+    {
+        $responseBody = [
+            'success' => false,
+            'error'   => [
+                'message' => 'The email address does not correspond to any account.',
+                'code'    => 40
+            ]
+        ];
+        $this->http->mock->when()
+            ->methodIs('POST')
+            ->pathIs('/api/convert/html/')
+            ->then()
+            ->statusCode(Response::HTTP_UNAUTHORIZED)
+            ->body(json_encode($responseBody))
+            ->end();
+        $this->http->setUp();
+
+        // - Fail because of bad credentials
+        $fileResource = fopen($this->tempFile, 'w');
+        $this->expectExceptionMessage('The email address does not correspond to any account.');
+        $this->pdfKiwi->convertHtml('<h1>Testing pdf.kiwi</h1>', $fileResource);
+    }
 }
