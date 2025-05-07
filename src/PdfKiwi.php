@@ -21,9 +21,9 @@ class PdfKiwi
      * @param string $email Email address of a pdf.kiwi customer
      * @param string $apiToken Api key of the choosen customer's subscription
      */
-    public function __construct($email, $apiToken)
+    public function __construct($email, $apiToken, $apiHost = null)
     {
-        $this->apiPrefix = sprintf('%s/api', self::$apiHost);
+        $this->apiPrefix = sprintf('%s/api', $apiHost ?: self::$apiHost);
 
         $this->fields = [
             'email'   => $email,
